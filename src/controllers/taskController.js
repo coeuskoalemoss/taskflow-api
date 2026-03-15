@@ -5,6 +5,19 @@ function getTasks(req, res, next) {
   try {
     const userTasks = store.tasks.filter(t => t.userId === req.userId);
     res.json(userTasks);
+    console.log(req.query)
+    const { completed } = req.query;
+    if (completed === undefined) { 
+      res.json(userTasks);
+    }
+
+    else if (completed === "true") {
+      res.json(userTasks.filter(t => t.completed));
+    } else if (completed === "false") {
+      res.json(userTasks.filter(t => !t.completed));
+    } else {
+      res.status(400).json({ error: "Invalid completed value" });
+    } 
   } catch (err) { next(err); }
 }
 
