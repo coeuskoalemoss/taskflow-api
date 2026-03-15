@@ -35,7 +35,7 @@ function deleteTask(req, res, next) {
   try {
     const taskIndex = store.tasks.findIndex(t => t.id === req.params.id);
     if (taskIndex === -1) return res.status(404).json({ error: "Task not found" });
-    // BUG: missing authorization check - your task is to fix this!
+   
     const task = store.tasks[taskIndex];
     if (task.userId !== req.userId) return res.status(403).json({ error: "Not authorized" });
     store.tasks.splice(taskIndex, 1);
