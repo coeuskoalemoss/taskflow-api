@@ -21,6 +21,19 @@ function getTasks(req, res, next) {
   } catch (err) { next(err); }
 }
 
+
+function getTask(req, res, next) {
+  try {
+    
+    const task = store.tasks.find(t => t.id === req.params.id);
+    if (!task) return res.status(404).json({ error: "Task not found" });
+
+    if (task.userId !== req.userId) return res.status(403).json({ error: "Not authorized" });
+    res.json(task)
+
+  } catch (err) { next(err); }
+}
+
 function createTask(req, res, next) {
   try {
     const { title, description } = req.body;
@@ -56,4 +69,4 @@ function deleteTask(req, res, next) {
   } catch (err) { next(err); }
 }
 
-module.exports = { getTasks, createTask, updateTask, deleteTask };
+module.exports = { getTasks, createTask, updateTask, deleteTask, getTask };
